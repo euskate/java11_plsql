@@ -215,6 +215,69 @@ select tax(2003) as "세금" from emp where eno = 2003;
 
 -- 직급(pos)을 매개변수로 입력 받아 해당 직급별 급여 총액, 평균 급여, 인원수를 출력하는 
 -- 프로시저(tot_emp)를 작성하시오.
+CREATE OR REPLACE PROCEDURE tot_emp(v_pos IN VARCHAR2)
+IS
+    a NUMBER :=0;
+    b NUMBER(12,2):=0;
+    c NUMBER:=0;
+BEGIN
+    SELECT SUM(salary+NVL(bonus,0)), AVG(salary+NVL(bonus,0)), COUNT(*) INTO a,b,c
+    FROM emp WHERE pos=v_pos;
+    DBMS_OUTPUT.PUT_LINE(v_pos || '의 급여 집계');
+    DBMS_OUTPUT.PUT_LINE('급여 총액 : ' || a || '원');
+    DBMS_OUTPUT.PUT_LINE('평균 급여 : ' || b || '원');
+    DBMS_OUTPUT.PUT_LINE('인원수 : ' || c || '명');
+END tot_emp;
+/
+
+EXEC tot_emp('사원');
+EXEC tot_emp('대리');
+EXEC tot_emp('과장');
+EXEC tot_emp('부장');
+
+
+ACCEPT k_pos PROMPT '집계할 직책을 입력하세요 :';
+
+select * from emp;
+
+-- 사원을 추가하는 프로시저(ins_emp)를 작성하시오.
+-- (단, 추가하는 데이터는 임의로 할 것.)
+CREATE OR REPLACE PROCEDURE ins_emp(veno IN emp.eno%TYPE,
+vename IN emp.ename%TYPE, vpno IN emp.pno%TYPE,
+vpos IN emp.pos%TYPE, vpcode IN emp.pcode%TYPE,
+vaddr IN emp.addr%TYPE, vtel IN emp.tel%TYPE,
+vsalary IN emp.salary%TYPE, vbonus IN emp.bonus%TYPE,
+vregdate IN emp.regdate%TYPE, vgender IN emp.gender%TYPE,
+vsuperior IN emp.superior%TYPE)
+IS
+BEGIN
+    INSERT INTO emp VALUES(veno,vename,vpno,vpos,vpcode,vaddr,vtel,vsalary,vbonus,
+    vregdate,vgender,vsuperior);
+    COMMIT;
+END;
+
+EXEC ins_emp(2011,'김다연',30,'사원','223-245','동두천시','031-457-1405',2350000,null,'2023-12-26',2,2005);
+EXEC ins_emp(2012,'히카루',40,'사원','123-125','서울시 구로구','02-2454-6903',2320000,null,'2024-01-10',1,2007);
+EXEC ins_emp(2013,'서영은',40,'사원','127-113','서울시 금천구','02-8654-2728',2320000,null,'2024-01-10',2,2006);
+
+select * from emp;
+
+-- 사원번호(eno)를 매개변수로 입력받아 해당 직원에 대한 퇴사 처리를 하는 프로시저(del_emp)를 작성하시오.
+-- (작성된 del_emp 프로시저에서 단, 매개값으로 사원번호가 2001인 사원을 진행할 것.)
+CREATE OR REPLACE PROCEDURE del_emp(veno IN emp.eno%TYPE)
+IS
+BEGIN
+    DELETE FROM emp where eno=veno;
+    COMMIT;
+END;
+
+EXEC del_emp(2001);
+
+
+
+
+
+
 
 
 
