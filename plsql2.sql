@@ -160,6 +160,18 @@ IS
     sw emp%ROWTYPE;
 BEGIN
     SELECT * INTO sw FROM emp;
+    DBMS_OUTPUT.PUT_LINE('데이터 검색 성공');
+    COMMIT;
+EXCEPTION
+    WHEN TOO_MANY_ROWS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('데이터가 너무 많습니다.');
+    WHEN NO_DATA_FOUND THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('해당 데이터가 없습니다.');
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('기타 오류로 인해 정상처리 되지 못했습니다.');
 END;
 /
 
