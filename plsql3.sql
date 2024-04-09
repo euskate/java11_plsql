@@ -71,11 +71,52 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(vsup || '가 직속상관인 사원수 : ' || vcnt);
 END;
 /
-EXEC cur_super(2002);
+EXEC cur_super(2004);
 
 
-
--- 패키지(PACKAGE) : 
+-- 패키지(PACKAGE) : 여러 개의 프로시저 또는 함수 등을 하나의 그룹으로 묶은 묶음.
+CREATE OR REPLACE PACKAGE BODY emp_pack 
+IS
+    CURSOR sw_cur IS SELECT * FROM emp;
+    PROCEDURE eno_out
+    IS
+    BEGIN
+       DBMS_OUTPUT.PUT_LINE('사원번호');
+       DBMS_OUTPUT.PUT_LINE('--------');
+       FOR k IN sw_cur LOOP 
+          DBMS_OUTPUT.PUT_LINE(k.eno);
+       END LOOP;
+    END eno_out;
+    PROCEDURE ename_out
+    IS
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('사원명');
+        DBMS_OUTPUT.PUT_LINE('------');
+        FOR k IN sw_cur LOOP 
+            DBMS_OUTPUT.PUT_LINE(k.ename);
+        END LOOP;
+    END ename_out;
+    PROCEDURE pno_out
+    IS
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('부서번호');
+        DBMS_OUTPUT.PUT_LINE('------');
+        FOR k IN sw_cur LOOP
+            DBMS_OUTPUT.PUT_LINE(K.부서번호);
+        END LOOP;
+    END pno_out;
+    PROCEDURE pos_out
+    IS
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('직급');
+        DBMS_OUTPUT.PUT_LINE('----');
+        FOR k IN sw_cur LOOP 
+            DBMS_OUTPUT.PUT_LINE(k.pos);
+        END LOOP;
+    END pos_out;
+END;
+/
+EXEC emp_pack.ename_out;
 
 
 -- 트리거(TRIGGER) : 
