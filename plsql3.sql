@@ -265,8 +265,7 @@ BEGIN
     IF (vcnt=0) THEN
         INSERT INTO inventory VALUES (:NEW.pno, :NEW.amount, :NEW.price);
     ELSE
-        UPDATE inventory SET amount=amount+:NEW.amount, price=:NEW.price*1.4 
-        WHERE pno=:NEW.pno;
+        UPDATE inventory SET amount=amount+:NEW.amount WHERE pno=:NEW.pno;
     END IF;    
 END;
 /
@@ -274,4 +273,7 @@ END;
 select * from inventory;
 UPDATE release SET amount=amount-2 WHERE pno=100;
 
-
+DROP PROCEDURE 프로시저명;
+DROP FUNCTION 함수명;
+DROP PACKAGE 패키지명;
+DROP TRIGGER 트리거명;
