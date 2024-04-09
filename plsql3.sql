@@ -52,6 +52,29 @@ END;
 /
 EXEC emp_prt2(10);
 
+-- 직속코드(SUPERIOR)를 매개변수로 입력받아 입력한 직속코드에 속한 직원의 
+-- 사원번호(eno), 사원명(ename), 직급(pos), 급여(salary) 를 출력하는 cur_super
+-- 묵시적 커서(IMPLICIT CURSOR)를 생성하시오.
+CREATE OR REPLACE PROCEDURE cur_super(vsup IN emp.superior%TYPE)
+IS
+    CURSOR cur_data IS SELECT eno, ename, pos, salary FROM emp WHERE superior=vsup;
+vcnt NUMBER;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('**********************************');
+    DBMS_OUTPUT.PUT_LINE('사원번호  사원명  직급  급여');
+    DBMS_OUTPUT.PUT_LINE('**********************************');
+    FOR cur IN cur_data LOOP 
+       DBMS_OUTPUT.PUT_LINE(RPAD(cur.eno,9) || RPAD(cur.ename,8) || RPAD(cur.pos,7) || RPAD(cur.salary,10));
+       vcnt := cur_data%ROWCOUNT;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('**********************************');
+    DBMS_OUTPUT.PUT_LINE(vsup || '가 직속상관인 사원수 : ' || vcnt);
+END;
+/
+EXEC cur_super(2002);
+
+
+
 -- 패키지(PACKAGE) : 
 
 
